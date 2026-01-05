@@ -3,6 +3,11 @@
 
   var balansers_with_search;
   
+  var Defined = {
+    api: 'lampac',
+    apn: ''
+  };
+
   var unic_id = Lampa.Storage.get('lampac_unic_id', '');
   if (!unic_id) {
     unic_id = Lampa.Utils.uid(8).toLowerCase();
@@ -41,13 +46,6 @@ function account(url) {
   
   var Network = Lampa.Reguest;
 
-
-  var Defined = {
-    api: 'lampac',
-    localhost: 'https://lampac-ukraine.mooo.com/',
-    apn: ''
-  };
-	
   function component(object) {
     var network = new Network();
     var scroll = new Lampa.Scroll({
@@ -80,7 +78,7 @@ function account(url) {
 	
     if (balansers_with_search == undefined) {
       network.timeout(10000);
-      network.silent(account('https://lampac-ukraine.mooo.com/lite/withsearch'), function(json) {
+      network.silent(account(Defined.api + '/lite/withsearch'), function(json) {
         balansers_with_search = json;
       }, function() {
 		  balansers_with_search = [];
@@ -110,7 +108,9 @@ function account(url) {
 		
 		Lampa.Storage.set('clarification_search',all);
 	}
-	
+
+	Defined.localhost = 'https://band-lampaua.mooo.com/',
+
 	function clarificationSearchGet(){
 		var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title);
 		var all = Lampa.Storage.get('clarification_search','{}');
@@ -218,6 +218,7 @@ function account(url) {
         else noreset();
 	  });
     };
+
     this.externalids = function() {
       return new Promise(function(resolve, reject) {
         if (!object.movie.imdb_id || !object.movie.kinopoisk_id) {
@@ -1582,7 +1583,7 @@ else if (element.url) {
         });
       }
     };
-	
+
     Lampa.Manifest.plugins = manifst;
     Lampa.Lang.add({
       lampac_watch: { //
