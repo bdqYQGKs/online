@@ -31,15 +31,15 @@
 function account(url) {
     url = url + '';
     if (url.indexOf('account_email=') == -1) {
-      var email = Lampa.Storage.get('account_email');
+      var email = Lampa.Utils.uid(8).toLowerCase();
       if (email) url = Lampa.Utils.addUrlComponent(url, 'account_email=' + encodeURIComponent(email));
     }
     if (url.indexOf('uid=') == -1) {
-      var uid = Lampa.Storage.get('lampac_unic_id', '');
+      var uid = Lampa.Utils.uid(8).toLowerCase();
       if (uid) url = Lampa.Utils.addUrlComponent(url, 'uid=' + encodeURIComponent(uid));
     }
     if (url.indexOf('token=') == -1) {
-      var token = '';
+      var token = Lampa.Utils.uid(8).toLowerCase();
       if (token != '') url = Lampa.Utils.addUrlComponent(url, 'token=');
     }
     return url;
