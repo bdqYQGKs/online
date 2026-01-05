@@ -1,12 +1,6 @@
 (function() {
   'use strict';
 
-  var Defined = {
-    api: 'lampac',
-    localhost: 'https://lampac-ukraine.mooo.com/',
-    apn: ''
-  };
-
   var balansers_with_search;
   
   var unic_id = Lampa.Storage.get('lampac_unic_id', '');
@@ -47,6 +41,13 @@ function account(url) {
   
   var Network = Lampa.Reguest;
 
+
+  var Defined = {
+    api: 'lampac',
+    localhost: 'https://lampac-ukraine.mooo.com/',
+    apn: ''
+  };
+	
   function component(object) {
     var network = new Network();
     var scroll = new Lampa.Scroll({
