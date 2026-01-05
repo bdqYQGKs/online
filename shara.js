@@ -1,4 +1,5 @@
 (function() {
+   // hello from lampac ^^
   'use strict';
 
   var balansers_with_search;
