@@ -284,10 +284,11 @@ function account(url) {
         
         this.startSource = function(json) {
         return new Promise(function(resolve, reject) {
-            var allowed = ['filmix', 'mirage'];
+            var allowed = ['filmix', 'mirage', 'rhsprem'];
             var nameMap = {
                 filmix: 'SHARA 1',
-                mirage: 'SHARA 2'
+                mirage: 'SHARA 2',
+				rhsprem: 'SHARA 3'
             };
 
             json.forEach(function(j) {
