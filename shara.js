@@ -6,7 +6,8 @@
   
   var Defined = {
     api: 'lampac',
-    apn: ''
+    apn: '',
+    localhost: 'https://shara.runasp.net/'
   };
 
   var unic_id = Lampa.Storage.get('lampac_unic_id', '');
@@ -79,7 +80,7 @@ function account(url) {
 	
     if (balansers_with_search == undefined) {
       network.timeout(10000);
-      network.silent(account(Defined.api + '/lite/withsearch'), function(json) {
+      network.silent(account(Defined.localhost + 'lite/withsearch'), function(json) {
         balansers_with_search = json;
       }, function() {
 		  balansers_with_search = [];
@@ -109,8 +110,6 @@ function account(url) {
 		
 		Lampa.Storage.set('clarification_search',all);
 	}
-
-	Defined.localhost = 'https://shara.runasp.net/',
 
 	function clarificationSearchGet(){
 		var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title);
@@ -282,44 +281,37 @@ function account(url) {
       }
     };
         
-        this.startSource = function(json) {
-        return new Promise(function(resolve, reject) {
-            var allowed = ['filmix', 'mirage', 'rhsprem'];
-            var nameMap = {
-                filmix: 'SHARA 1',
-                mirage: 'SHARA 2',
-				rhsprem: 'SHARA 3'
+       this.startSource = function(json) {
+      return new Promise(function(resolve, reject) {
+        json.forEach(function(j) {
+          var name = balanserName(j);
+
+          if (name != 'filmix') {
+            sources[name] = {
+              url: j.url,
+              name: j.name.replace(/[\u{1F300}-\u{1FAFF}]/gu, ''),
+              show: typeof j.show == 'undefined' ? true : j.show
             };
-
-            json.forEach(function(j) {
-                var originalName = balanserName(j);
-                if (allowed.includes(originalName)) {
-                    var displayName = nameMap[originalName] || j.name;
-                    sources[originalName] = {
-                        url: j.url,
-                        name: displayName,
-                        show: typeof j.show == 'undefined' ? true : j.show
-                    };
-                }
-            });
-
-            filter_sources = Lampa.Arrays.getKeys(sources);
-            if (filter_sources.length) {
-                var last_select_balanser = Lampa.Storage.cache('online_last_balanser', 3000, {});
-                if (last_select_balanser[object.movie.id]) {
-                    balanser = last_select_balanser[object.movie.id];
-                } else {
-                    balanser = Lampa.Storage.get('online_balanser', filter_sources[0]);
-                }
-                if (!sources[balanser]) balanser = filter_sources[0];
-                if (!sources[balanser].show && !object.lampac_custom_select) balanser = filter_sources[0];
-                source = sources[balanser].url;
-                Lampa.Storage.set('active_balanser', balanser);
-                resolve(json);
-            } else {
-                reject();
-            }
+          }
+          
         });
+        filter_sources = Lampa.Arrays.getKeys(sources);
+        if (filter_sources.length) {
+          var last_select_balanser = Lampa.Storage.cache('online_last_balanser', 3000, {});
+          if (last_select_balanser[object.movie.id]) {
+            balanser = last_select_balanser[object.movie.id];
+          } else {
+            balanser = Lampa.Storage.get('online_balanser', filter_sources[0]);
+          }
+          if (!sources[balanser]) balanser = filter_sources[0];
+          if (!sources[balanser].show && !object.lampac_custom_select) balanser = filter_sources[0];
+          source = sources[balanser].url;
+          Lampa.Storage.set('active_balanser', balanser);
+          resolve(json);
+        } else {
+          reject();
+        }
+      });
     };
 
     this.lifeSource = function() {
