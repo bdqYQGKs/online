@@ -110,7 +110,7 @@ function account(url) {
 		Lampa.Storage.set('clarification_search',all);
 	}
 
-	Defined.localhost = 'https://band-lampaua.mooo.com/',
+	Defined.localhost = 'http://paladin.somee.com/',
 
 	function clarificationSearchGet(){
 		var id = Lampa.Utils.hash(object.movie.number_of_seasons ? object.movie.original_name : object.movie.original_title);
