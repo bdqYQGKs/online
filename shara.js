@@ -29,18 +29,18 @@
   }
 }
 
-function account(url) {
+ function account(url) {
     url = url + '';
     if (url.indexOf('account_email=') == -1) {
-      var email = Lampa.Utils.uid(8).toLowerCase();
+      var email = Lampa.Storage.get('account_email');
       if (email) url = Lampa.Utils.addUrlComponent(url, 'account_email=' + encodeURIComponent(email));
     }
     if (url.indexOf('uid=') == -1) {
-      var uid = Lampa.Utils.uid(8).toLowerCase();
+      var uid = Lampa.Storage.get('lampac_unic_id', '');
       if (uid) url = Lampa.Utils.addUrlComponent(url, 'uid=' + encodeURIComponent(uid));
     }
     if (url.indexOf('token=') == -1) {
-      var token = Lampa.Utils.uid(8).toLowerCase();
+      var token = '';
       if (token != '') url = Lampa.Utils.addUrlComponent(url, 'token=');
     }
     return url;
@@ -286,13 +286,12 @@ function account(url) {
         json.forEach(function(j) {
           var name = balanserName(j);
 
-          if (name != 'filmix') {
             sources[name] = {
               url: j.url,
               name: j.name.replace(/[\u{1F300}-\u{1FAFF}]/gu, ''),
               show: typeof j.show == 'undefined' ? true : j.show
             };
-          }
+          
           
         });
         filter_sources = Lampa.Arrays.getKeys(sources);
