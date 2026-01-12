@@ -285,7 +285,9 @@
       return new Promise(function(resolve, reject) {
         json.forEach(function(j) {
           var name = balanserName(j);
-
+ 		if (json.length == 1) {
+          $('.torrent-filter .simple-button--filter').first().hide()
+        }
             sources[name] = {
               url: j.url,
               name: j.name.replace(/[\u{1F300}-\u{1FAFF}]/gu, ''),
